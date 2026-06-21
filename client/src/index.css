@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #4F46E5;
+  --color-bg: #F7F8FD;
+
+  --color-text: #121212;
+  --color-text-muted: #64748B;
+
+  --color-border: #CED6E0;
+
+  --color-seat-occupied: #94A3B8;
+
+  --color-success: #0DC599;
+  --color-danger: #ED183E;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #E5E7EB;
+}
+
+@layer components {
+  .page-container {
+    @apply min-h-screen bg-[#F7F8FD] px-6;
+  }
+
+  .primary-btn {
+    @apply w-full h-11 rounded-[5px] bg-[#4F46E5] text-white font-semibold;
+  }
+
+  .section-title {
+    @apply text-[16px] font-bold text-[#454545];
+  }
+
+  .muted-text {
+    @apply text-[14px] text-[#64748B];
+  }
+
+  .progress-track {
+    @apply h-1 bg-[#CED6E0] rounded-full;
+  }
+
+  .progress-fill {
+    @apply h-full bg-[#4F46E5] rounded-full;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+} 
