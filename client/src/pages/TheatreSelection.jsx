@@ -31,12 +31,12 @@ const TheatreSelection = () => {
       setTheatres(theatres);
     }
     loadTheatres();
-    dispatch(setDate(dates[0].fullDate.toLocaleDateString()));
+    dispatch(setDate(dates[0].fullDate.toLocaleDateString("en-US", { year: 'numeric', month: '2-digit', day: '2-digit' })));
   }, []);
 
   const handleDateSelect = (date) => {
     setActiveDate(date);
-    dispatch(setDate(date.fullDate.toLocaleDateString()));
+    dispatch(setDate(date.fullDate.toLocaleDateString("en-US", { year: 'numeric', month: '2-digit', day: '2-digit' })));
   }
 
   const handleTheatreSelect = (theatre) => {
