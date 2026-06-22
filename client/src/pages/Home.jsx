@@ -9,6 +9,7 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const [theatres, setTheatres] = useState([]);
   const [activeTab, setActiveTab] = useState("now");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
@@ -19,6 +20,8 @@ const Home = () => {
         setTheatres(theatreData);
       } catch (err) {
         console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     }
     loadData();
@@ -27,6 +30,20 @@ const Home = () => {
   const nowShowing = movies.filter((movie) => !movie.comingSoon);
   const comingSoon = movies.filter((movie) => movie.comingSoon);
   const displayedMovies = activeTab === "now" ? nowShowing : comingSoon;
+
+  if (isLoading) {
+    return (
+      <div className="w-full max-w-[390px] min-h-screen bg-bg flex flex-col items-center justify-center pb-20">
+        <div className="w-[40px] h-[40px] border-[4px] border-primary border-t-transparent rounded-full animate-spin mb-[16px]"></div>
+        <h2 className="text-[16px] font-bold text-text text-center px-[26px]">
+          Waking up the server...
+        </h2>
+        <p className="text-[14px] text-text-muted text-center mt-[8px] px-[40px]">
+          Please wait while the Render free-tier backend spins up. This usually takes around 60 seconds!
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-[390px] min-h-screen bg-bg relative pb-20">

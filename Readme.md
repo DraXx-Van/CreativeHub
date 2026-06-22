@@ -101,4 +101,36 @@ To bypass the registration flow and directly evaluate the checkout pipeline, you
 - **Email:** `demo@demo.com`
 - **Password:** `123456`
 
+<<<<<<< Updated upstream
 
+=======
+## Architectural Diagrams
+
+### System Architecture
+```mermaid
+graph TD
+    Client[React Frontend]
+    Redux[(Redux Store + LocalStorage)]
+    API[Express.js REST API]
+    Auth[JWT Middleware]
+    DB[(MongoDB Atlas)]
+    
+    Client <-->|State Sync| Redux
+    Client -->|HTTP Requests| API
+    API -->|Validates Token| Auth
+    API <-->|ACID Transactions| DB
+```
+
+### Application Flow
+```mermaid
+flowchart LR
+    Home[Home Screen] --> Movie[Movie Details]
+    Movie --> Theatre[Select Theatre & Date]
+    Theatre --> Seats[Seat Selection]
+    Seats -->|Validates Auth| AuthGateway{Logged In?}
+    AuthGateway -->|No| Login[Auth Screen]
+    Login -->|Redirects| Checkout
+    AuthGateway -->|Yes| Checkout[Checkout Summary]
+    Checkout -->|Simulate Pay| Success[Payment Success]
+```
+>>>>>>> Stashed changes
