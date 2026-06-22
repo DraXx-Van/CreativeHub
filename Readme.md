@@ -1,5 +1,8 @@
 # Creative Upaay - Movie Ticket Reservation System
 
+> [!WARNING]
+> **Reviewer Notice:** The backend is hosted on a Render Free Tier instance. If the application has not been accessed in the last 15 minutes, Render will put the backend to sleep. **The first request may take between 1 to 3 minutes to wake up the server.** If the loading screen spins indefinitely, this is a known Render infrastructure limitation—please simply refresh the page.
+
 This repository contains the complete implementation for the Creative Upaay Full Stack Development Assignment. The application is a mobile-first (390px max-width) movie ticket reservation system that handles the entire booking lifecycle—from movie discovery to strict concurrency control during seat allocation.
 
 ## Architectural Diagrams
@@ -101,36 +104,3 @@ To bypass the registration flow and directly evaluate the checkout pipeline, you
 - **Email:** `demo@demo.com`
 - **Password:** `123456`
 
-<<<<<<< Updated upstream
-
-=======
-## Architectural Diagrams
-
-### System Architecture
-```mermaid
-graph TD
-    Client[React Frontend]
-    Redux[(Redux Store + LocalStorage)]
-    API[Express.js REST API]
-    Auth[JWT Middleware]
-    DB[(MongoDB Atlas)]
-    
-    Client <-->|State Sync| Redux
-    Client -->|HTTP Requests| API
-    API -->|Validates Token| Auth
-    API <-->|ACID Transactions| DB
-```
-
-### Application Flow
-```mermaid
-flowchart LR
-    Home[Home Screen] --> Movie[Movie Details]
-    Movie --> Theatre[Select Theatre & Date]
-    Theatre --> Seats[Seat Selection]
-    Seats -->|Validates Auth| AuthGateway{Logged In?}
-    AuthGateway -->|No| Login[Auth Screen]
-    Login -->|Redirects| Checkout
-    AuthGateway -->|Yes| Checkout[Checkout Summary]
-    Checkout -->|Simulate Pay| Success[Payment Success]
-```
->>>>>>> Stashed changes
