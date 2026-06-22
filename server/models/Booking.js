@@ -37,7 +37,7 @@ const bookingSchema = new mongoose.Schema(
 
     format: {
       type: String,
-      enum: ["2D", "3D"],
+      enum: ["2D", "3D", "IMAX"],
       required: true,
     },
 
