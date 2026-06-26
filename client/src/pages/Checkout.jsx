@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io";
@@ -11,10 +12,10 @@ const Checkout = () => {
   const authState = useSelector((state) => state.auth);
   
   // Data for Summary
-  const numTickets = bookingState?.seats?.length || 2;
-  const totalPrice = bookingState?.totalPrice || 560;
+  const numTickets = bookingState?.seats?.length;
+  const totalPrice = bookingState?.totalPrice;
   const bookingFee = 20;
-  const grandTotal = totalPrice + bookingFee;
+  const grandTotal = bookingState.grandTotal;
 
   // Form states
   const [paymentMethod, setPaymentMethod] = useState("card"); // 'card' | 'wallet'
@@ -35,7 +36,7 @@ const Checkout = () => {
     if (paymentMethod === "card") {
       if (!nameOnCard.trim()) newErrors.name = "Name is required";
       if (!/^\d{16}$/.test(cardNumber.replace(/\s/g, ''))) newErrors.card = "Card must be 16 digits";
-      if (!/^\d{2}\/\d{2}$/.test(expiry)) newErrors.expiry = "Use MM/YY format";
+      if (!/^\d{2}\/\d{2}$/.test(expiry)) newErrors.expiry = "MM/YY format";
       if (!/^\d{3,4}$/.test(cvc)) newErrors.cvc = "Invalid CVC";
     }
     setErrors(newErrors);
@@ -72,40 +73,31 @@ const Checkout = () => {
 
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${API_URL}/api/bookings/create`, {
-        method: "POST",
+      const response = await axios.post(`${API_URL}/api/bookings/create`, {
+        movie: bookingState.movie?._id,
+        theatre: bookingState.theatre?._id,
+        screenNumber: bookingState.screen,
+        showDate: bookingState.date,
+        showTime: bookingState.showTime,
+        format: bookingState.format,
+        seats: bookingState.seats,
+        totalPrice: grandTotal,
+        paymentStatus: "paid",
+      }, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${authState?.user?.token}`,
         },
-        body: JSON.stringify({
-          movie: bookingState.movie?._id,
-          theatre: bookingState.theatre?._id,
-          screenNumber: bookingState.screen || 1,
-          showDate: bookingState.date,
-          showTime: bookingState.showTime,
-          format: bookingState.format || "2D",
-          seats: bookingState.seats,
-          totalPrice: grandTotal,
-          paymentStatus: "paid",
-        }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (response.status === 200 || response.status === 201) {
         setIsProcessing(false);
         navigate('/payment-success');
-      } else {
-        setIsProcessing(false);
-        console.error("Booking Error:", data.message);
-        alert(`Booking Failed: ${data.message}`);
-        setShowErrorModal(true);
       }
     } catch (error) {
       setIsProcessing(false);
       console.error(error);
-      alert("Network error: failed to create booking");
+      const message = error.response?.data?.message || "Network error: failed to create booking";
+      alert(`Booking Failed: ${message}`);
       setShowErrorModal(true);
     }
   };
@@ -213,7 +205,7 @@ const Checkout = () => {
             {/* Name */}
             <div className="flex flex-col gap-[12px]">
               <label className="text-[14px] font-normal text-black leading-[17px]">Name on card</label>
-              <input 
+              <input
                 type="text"
                 placeholder="Name on card"
                 value={nameOnCard}

@@ -18,13 +18,13 @@ const ScheduleSelection = () => {
 
   const bookingState = useSelector((state) => state.booking);
 
-  const movie = bookingState?.movie || { formats: [], title: "", banner: "" };
-  const theatre = bookingState?.theatre || { name: "", screens: [], minPrice: 0, maxPrice: 0 };
-  const selectedDate = bookingState?.date || "";
+  const movie = bookingState?.movie;
+  const theatre = bookingState?.theatre;
+  const selectedDate = bookingState?.date;
 
   const theatreFormats = [
     ...new Set(
-      theatre.screens.flatMap((screen) => screen.formats)
+      theatre?.screens?.flatMap((screen) => screen.formats) || []
     ),
   ];
 
@@ -32,9 +32,7 @@ const ScheduleSelection = () => {
     theatreFormats.includes(format)
   );
 
-  const [activeFormat, setActiveFormat] = useState(
-    availableFormats[0]
-  );
+  const [activeFormat, setActiveFormat] = useState(availableFormats[0]);
 
   const [activeScreen, setActiveScreen] = useState(null);
   const [activeTime, setActiveTime] = useState(null);

@@ -7,16 +7,16 @@ const PaymentSuccess = () => {
   const navigate = useNavigate();
   const bookingState = useSelector((state) => state.booking);
   
-  const movie = bookingState?.movie || { title: "Movie Title", banner: "" };
-  const theatre = bookingState?.theatre || { name: "Theatre Name" };
-  const seats = bookingState?.seats || [];
-  const screen = bookingState?.screen || "1";
-  const format = bookingState?.format || "2D";
-  const date = bookingState?.date || "Date";
-  const time = bookingState?.showTime || "Time";
+  const movie = bookingState?.movie;
+  const theatre = bookingState?.theatre;
+  const seats = bookingState?.seats;
+  const screen = bookingState?.screen;
+  const format = bookingState?.format;
+  const date = bookingState?.date;
+  const time = bookingState?.showTime;
   
   // Calculate total
-  const totalPrice = bookingState?.totalPrice || 560;
+  const totalPrice = bookingState?.totalPrice;
   const bookingFee = 20;
   const grandTotal = totalPrice + bookingFee;
   
@@ -62,7 +62,7 @@ const PaymentSuccess = () => {
         {/* Hero Image */}
         <div className="w-full h-[170px]">
           <img 
-            src={movie.banner || 'https://via.placeholder.com/322x170'} 
+            src={movie?.banner}
             alt={movie.title} 
             className="w-full h-full object-cover"
           />

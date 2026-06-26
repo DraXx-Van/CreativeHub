@@ -15,7 +15,7 @@ const MovieDetails = () => {
  
   if (!movie) return <div className="w-full min-h-screen bg-bg">Movie Not Found</div>;
 
-  const isWishlisted = wishlist.some((m) => m._id === movie._id);
+  const isWishlisted = wishlist.find((m) => m._id === movie._id);
 
   const handleWishlistToggle = () => {
     dispatch(toggleWishlist(movie));

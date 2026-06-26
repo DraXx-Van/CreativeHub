@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io";
@@ -32,10 +33,9 @@ const SeatSelection = () => {
           showTime: bookingState.showTime,
         });
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${API_URL}/api/bookings/occupied-seats?${query.toString()}`);
-        const data = await res.json();
-        if (data.success) {
-          setOccupiedSeats(data.occupiedSeats);
+        const res = await axios.get(`${API_URL}/api/bookings/occupied-seats?${query.toString()}`);
+        if (res.data.success) {
+          setOccupiedSeats(res.data.occupiedSeats);
         }
       } catch (err) {
         console.error("Failed to fetch occupied seats", err);
@@ -174,7 +174,7 @@ const SeatSelection = () => {
         {/* Scrollable Container */}
         <div className="w-full overflow-x-auto pl-[26px] pr-[26px] pb-[20px] scrollbar-hide">
           <div className="flex flex-col gap-[8px] min-w-max pr-[26px]">
-            {rowLabelsUpper.map(row => renderSeatRow(row, 8))}
+            { rowLabelsUpper.map(row => renderSeatRow(row,8))}
 
             {/* Walkway Gap */}
             <div className="h-[20px]"></div>

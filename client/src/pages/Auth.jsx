@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { setCredentials } from '../store/authSlice';
@@ -58,24 +59,20 @@ const Auth = () => {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
       const url = `${API_URL}${endpoint}`;
-
+      
       // In a real scenario we use environment variables for the API URL
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+      const res = await axios.post(url, formData);
 
-      const data = await res.json();
-
-      if (res.ok) {
-        dispatch(setCredentials(data));
+      if (res.status === 200 || res.status === 201) {
+        dispatch(setCredentials(res.data));
         navigate(returnUrl); // Dynamically redirect to where they came from
-      } else {
-        setError(data.message || 'Authentication failed');
       }
     } catch (err) {
-      setError('Failed to connect to the server');
+      if (err.response && err.response.data) {
+        setError(err.response.data.message || 'Authentication failed');
+      } else {
+        setError('Failed to connect to the server');
+      }
     }
 
     setLoading(false);

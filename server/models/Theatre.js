@@ -7,11 +7,13 @@ const screenSchema = new mongoose.Schema(
       required: true,
     },
 
-    formats: {
-      type: [String],
-      enum: ["2D", "3D", "IMAX"],
-      required: true,
-    },
+    formats: [
+      {
+        type: String,
+        enum: ["2D", "3D", "IMAX"],
+        required: true,
+      },
+    ],
   },
   { _id: false }
 );

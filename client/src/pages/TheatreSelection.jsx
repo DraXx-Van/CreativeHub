@@ -23,6 +23,7 @@ const TheatreSelection = () => {
     };
   });
 
+
   const [activeDate, setActiveDate] = useState(dates[0]);
 
   useEffect(() => {

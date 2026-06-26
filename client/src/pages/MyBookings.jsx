@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io";
@@ -21,14 +22,13 @@ const MyBookings = () => {
       
       try {
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${API_URL}/api/bookings/my`, {
+        const res = await axios.get(`${API_URL}/api/bookings/my`, {
           headers: {
             Authorization: `Bearer ${authState.user.token}`
           }
         });
-        const data = await res.json();
-        if (data.success) {
-          setBookings(data.bookings);
+        if (res.data.success) {
+          setBookings(res.data.bookings);
         }
       } catch (err) {
         console.error(err);
@@ -42,18 +42,16 @@ const MyBookings = () => {
   const handleCancel = async (id) => {
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const res = await fetch(`${API_URL}/api/bookings/${id}/cancel`, {
-        method: "DELETE",
+      const res = await axios.delete(`${API_URL}/api/bookings/${id}/cancel`, {
         headers: {
           Authorization: `Bearer ${authState.user.token}`
         }
       });
-      const data = await res.json();
-      if (data.success) {
+      if (res.data.success) {
         // Update local state to show it's cancelled
         setBookings(bookings.map(b => b._id === id ? { ...b, bookingStatus: "cancelled" } : b));
       } else {
-        alert(data.message);
+        alert(res.data.message);
       }
     } catch (err) {
       alert("Failed to cancel booking");
@@ -121,7 +119,7 @@ const MyBookings = () => {
               {/* Hero Image */}
               <div className="w-full h-[168px] relative">
                 <img 
-                  src={booking.movie?.banner || "https://via.placeholder.com/400x200"} 
+                  src={booking.movie?.banner} 
                   alt="Movie" 
                   className="w-full h-full object-cover"
                 />
