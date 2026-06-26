@@ -113,8 +113,20 @@ const Auth = () => {
         </button>
       </div>
 
+      {/* Interviewer Test Account Notice */}
+      {isLogin && (
+        <div className="w-full max-w-[342px] mt-[30px] bg-[#F8FAFC] border border-[#E2E8F0] p-[16px] rounded-[8px] shadow-sm flex flex-col items-center mx-auto">
+          <p className="text-[13px] text-[#475569] font-medium mb-[4px]">👋 Welcome Interviewer!</p>
+          <p className="text-[12px] text-[#64748B] mb-[8px] text-center">You can use this test account to log in:</p>
+          <div className="flex flex-col items-center text-[12px] font-mono text-[#0F172A] bg-white px-[12px] py-[6px] rounded border border-[#E2E8F0] w-full">
+            <span>Email: test@mail.com</span>
+            <span className="mt-[2px]">Pass: test123</span>
+          </div>
+        </div>
+      )}
+
       {/* Form Section */}
-      <div className="w-full px-[24px] mt-[48px]">
+      <div className={`w-full px-[24px] ${isLogin ? 'mt-[30px]' : 'mt-[48px]'}`}>
         <form onSubmit={handleSubmit} className="flex flex-col w-[342px] gap-[28px]">
 
           {!isLogin && (
